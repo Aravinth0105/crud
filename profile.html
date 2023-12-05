@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD Operations</title>
+  <style>
+    .body1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #crudForm {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    #crudForm label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #crudForm input, #crudForm select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    #crudForm button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    #crudForm button:hover {
+      background-color: #45a049;
+    }
+    /* table{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      margin: 0;
+    } */
+    #table-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 80%; /* Adjust the width as needed */
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body> 
+
+  
+<div class="body1">
+  <form id="crudForm">
+    <label for="name">FirstName:</label>
+    <input type="text" id="name" required><br>
+    <label for="lastname">Last Name:</label>
+    <input type="text" id="lastname" required><br> &nbsp;
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" required><br>
+    <label for="email">Email:</label>
+    <input type="text" id="email" required><br>
+    <label for="salery">Salery:</label>
+    <input type="number" id="salery" required><br>
+    <label for="date">Date:</label>
+    <input type="date" id="date" required><br>
+    <button  type="button" onclick="addData()">Add</button>
+  </form>
+</div>
+<br>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Salery</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="data-body"></tbody>
+  </table>
+
+  <script>
+    // Sample data store
+    let data = [];
+
+    function addData() {
+      const name = document.getElementById('name').value;
+      const lastName = document.getElementById('lastname').value;
+      const age = document.getElementById('age').value;
+      const email = document.getElementById('email').value;
+      const salery = document.getElementById('salery').value;
+      const date = document.getElementById('date').value;
+
+      if (name && lastName && age && email && salery && date) {
+        const newData = { name, lastName, age, email, salery, date };
+        data.push(newData);
+        updateTable();
+        clearForm();
+      }
+    }
+
+    function updateTable() {
+      const tableBody = document.getElementById('data-body');
+      tableBody.innerHTML = '';
+
+      data.forEach((item, index) => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = item.name;
+        row.insertCell(1).textContent = item.lastName;
+        row.insertCell(2).textContent = item.age;
+        row.insertCell(3).textContent = item.email;
+        row.insertCell(4).textContent = item.salery;
+        row.insertCell(5).textContent = item.date;
+
+        const actionsCell = row.insertCell(6);
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => editData(index));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteData(index));
+
+        actionsCell.appendChild(editButton);
+        actionsCell.appendChild(deleteButton);
+      });
+    }
+
+    function clearForm() {
+      document.getElementById('name').value = '';
+      document.getElementById('lastname').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('salery').value = '';
+      document.getElementById('date').value = '';
+    }
+
+    function editData(index) {
+      const item = data[index];
+      document.getElementById('name').value = item.name;
+      document.getElementById('lastname').value = item.lastName;
+      document.getElementById('age').value = item.age;
+      document.getElementById('email').value = item.email;
+      document.getElementById('salery').value = item.salery;
+      document.getElementById('date').value = item.date;
+      deleteData(index);
+    }
+
+    function deleteData(index) {
+      data.splice(index, 1);
+      updateTable();
+    }
+  </script>
+
+</body>
+</html>
